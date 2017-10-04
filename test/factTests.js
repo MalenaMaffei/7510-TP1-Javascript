@@ -5,7 +5,7 @@ var assert = require('assert');
 var Fact = require('../src/fact');
 
 
-describe("Interpreter", function() {
+describe("Fact", function() {
 
     var fact = null;
 
