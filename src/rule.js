@@ -1,4 +1,5 @@
 var Query = require('../src/query');
+var InvalidEntryException = require('./invalidEntryException');
 
 var Rule = function(name, values, facts) {
     Query.call(this, name, values);
@@ -10,10 +11,12 @@ var Rule = function(name, values, facts) {
         return (this.name == query.name);
     }
 
-    this.getFacts = function(params) {
+    this.getFacts = function(query) {
         // aca tendria que hacer un mapa en el que tenga X: param.1 , Y: param.2
-        // y despues directamente reemplazo en mis facts mismo names pero distintos vals.
-        // esto se tiene que hacer afuera creo, en el interprete.
+        // y despues directamente reemplazo en mis facts mismo names pero distintos vals y devuelvo esos nuevos facts.
+        if (this.values.length != query.values.length) {
+            throw new InvalidEntryException(query + ", incorrect number of arguments, should be " + this.values.length);
+        }
         return this.facts;
     }
 }
