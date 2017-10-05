@@ -26,16 +26,25 @@ var Database = function() {
 
     this.addFact = function(fact) {
         if (this.factExists(fact)) {
-            throw new InvalidEntryException(fact);
+            throw new InvalidEntryException(fact + " is a duplicate.");
         }
         this.facts.push(fact);
     }
 
     this.addRule = function(rule) {
         if (this.ruleExists(rule)) {
-            throw new InvalidEntryException(rule);
+            throw new InvalidEntryException(rule + " is a duplicate.");
         }
         this.rules.push(rule);
+    }
+
+    this.getRule = function(query) {
+        for (var i = 0; i < this.rules.length; i++) {
+            if (this.rules[i].equals(query)) {
+                return this.rules[i];
+            }
+        }
+        throw new InvalidEntryException(query + " rule does not exist.");
     }
 
 

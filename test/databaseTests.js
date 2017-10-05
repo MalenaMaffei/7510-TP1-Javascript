@@ -5,6 +5,7 @@ var assert = require('assert');
 var Fact = require('../src/fact');
 var Rule = require('../src/rule');
 var Database = require('../src/database');
+var Query = require('../src/query');
 
 describe("Database", function() {
 
@@ -93,6 +94,19 @@ describe("Database", function() {
         it('adding new rule should NOT raise exception', function() {
             var other = new Rule('madre', ['pepa'], [factA, factB]);
             expect(db.addRule.bind(db, other)).to.not.throw();
+        });
+    });
+
+    describe('get Rules', function() {
+
+        it('get existing rule from query equals existing rule should be true', function() {
+            var query = new Query('padre', ['aa', 'bb'])
+            assert(db.getRule(query).equals(rule));
+        });
+
+        it('get nonexisting rule from query should raise exception', function() {
+            var query = new Query('tio', ['aa', 'bb'])
+            expect(db.getRule.bind(db, query)).to.throw();
         });
     });
 });
