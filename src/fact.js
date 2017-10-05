@@ -1,6 +1,7 @@
+var Query = require('../src/query');
+
 var Fact = function(name, values) {
-    this.name = name;
-    this.values = values;
+    Query.call(this, name, values);
 
 
     this.equals = function(other) {

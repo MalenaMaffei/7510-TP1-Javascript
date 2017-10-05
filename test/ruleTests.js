@@ -4,6 +4,7 @@ var assert = require('assert');
 
 var Rule = require('../src/rule');
 var Fact = require('../src/fact');
+var Query = require('../src/query');
 
 describe("Rule", function() {
 
@@ -32,18 +33,18 @@ describe("Rule", function() {
     describe('rule equality', function() {
 
         it('same rule should be true', function() {
-            var other = new Rule('padre', ['x', 'y'], [factA, factB]);
-            assert(rule.equals(other));
+            var query = new Query('padre', ['x', 'y']);
+            assert(rule.equals(query));
         });
 
         it('different rule names should be false', function() {
-            var other = new Rule('aaa', ['x', 'y'], [factA, factB]);
-            assert(!rule.equals(other));
+            var query = new Query('aaa', ['x', 'y']);
+            assert(!rule.equals(query));
         });
 
         it('different rule values but same name should be true', function() {
-            var other = new Rule('padre', ['x'], [factA]);
-            assert(rule.equals(other));
+            var query = new Query('padre', ['x']);
+            assert(rule.equals(query));
         });
     });
 });
