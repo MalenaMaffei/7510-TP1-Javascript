@@ -2,6 +2,7 @@ var Fact = require('../src/fact');
 var Rule = require('../src/rule');
 var Database = require('../src/database');
 var Query = require('../src/query');
+var Parser = require('../src/parser');
 
 var Interpreter = function() {
     this.db = {};
@@ -13,6 +14,7 @@ var Interpreter = function() {
     this.checkQuery = function(params) {
         // Aca es donde tengo que chequear si es una regla o  fact, le Tengo
         // que pasar la query al parser que es el que me va a devolver el objeto.
+
         return true;
     }
 
@@ -27,7 +29,7 @@ var Interpreter = function() {
         var factsExistence = facts.map((fact, i ) => {
             return(db.factExists(fact));
         });
-// TODO: anded is that correct?
+// TODO: anded? is that correct?
         const andedFacts = factsExistence.reduce( other && fact);
         return(andedFacts);
     }

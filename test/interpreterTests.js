@@ -7,12 +7,10 @@ var Rule = require('../src/rule');
 var Database = require('../src/database');
 var Query = require('../src/query');
 
-describe("Database", function() {
+describe("Interpreter", function() {
 
     var db = null;
-    var factA = null;
-    var factB = null;
-    var rule = null;
+    var interpreter = null;
     before(function() {
         // runs before all tests in this block
     });
@@ -22,14 +20,17 @@ describe("Database", function() {
     });
 
     beforeEach(function() {
-        // runs before each test in this block
-        factA = new Fact('varon', ['pepe']);
-        factB = new Fact('hijo', ['juan', 'pepe']);
-        rule = new Rule('padre', ['x', 'y'], [new Fact('varon', ['x']), new Fact('hijo', ['y', 'x'])]);
+        var factA = new Fact('varon', ['pepe']);
+        var factB = new Fact('hijo', ['juan', 'pepe']);
+        var rule = new Rule('padre', ['x', 'y'], [new Fact('varon', ['x']), new Fact('hijo', ['y', 'x'])]);
         db = new Database();
         db.addFact(factA);
         db.addFact(factB);
         db.addRule(rule);
+        // TODO no se si va con () o no
+        interpreter = new Interpreter(); //?
+        interpreter.db = db;
+
     });
 
     afterEach(function() {
