@@ -5,6 +5,7 @@ var Database = require('../src/database');
 
 
 var factSyntax = /^[a-z\-]+\([a-z\-]+(, [a-z\-]+){0,}\)\.$/
+var querySyntax = /^[a-z\-]+\([a-z\-]+(, [a-z\-]+){0,}\)$/
 var ruleSyntax = /^[a-z\-]+\([A-Z](, [A-Z]+){0,}\) :\- [a-z\-]+\([A-Z](, [A-Z]+){0,}\)(, [a-z\-]+\([A-Z](, [A-Z]+){0,}\)){0,}\.$/
 
 var Parser = function() {
@@ -21,7 +22,7 @@ var Parser = function() {
             // if else isFact: database.addFact;
             // else throw error
             if(this.isValidFact(entry)){
-                
+
             } else if (this.isValidRule(entry)) {
 
             } else {
