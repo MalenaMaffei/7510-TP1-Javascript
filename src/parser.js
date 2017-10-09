@@ -10,13 +10,13 @@ var querySyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\)$/i
 var ruleSyntax = /^([a-z\-]+)\(([A-Z](?:, [A-Z]+){0,})\) :\- ([a-z\-]+\([A-Z](, [A-Z]+){0,}\)(, [a-z\-]+\([A-Z](, [A-Z]+){0,}\)){0,})\.$/
 
 var Parser = function() {
-    this.parseDatabase = function(database) {
+    this.parseDatabase = function(strDb) {
         // returns Database object created from a list format database.
         // var rules = [];
         // var facts = [];
         // TODO: CAMBIAR NOMBRES DATABASE Y DB
         var db = new Database();
-        database.map((entry, i) => {
+        strDb.map((entry, i) => {
             if(this.isValidFact(entry)){
                 var fact = this.parseFact(entry);
                 db.addFact(fact);
