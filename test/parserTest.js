@@ -3,14 +3,15 @@ var should = require('should');
 var assert = require('assert');
 
 var Parser = require('../src/parser');
-// var Fact = require('../src/fact');
-// var Rule = require('../src/rule');
-// var Database = require('../src/database');
+var Fact = require('../src/fact');
+var Rule = require('../src/rule');
+var Database = require('../src/database');
 // var Query = require('../src/query');
 
 describe("Parser", function() {
 
     var parser = null;
+    var db = null;
     var correctDb = [
         "varon(juan).",
         "varon(pepe).",
@@ -44,6 +45,12 @@ describe("Parser", function() {
         "hijo(X, Y) :- varon(X), padre(Y, X).",
         "hija(X, Y) :- mujer(X), padre(Y, X)."
     ];
+
+    var factDb = [
+        "varon(juan).",
+        "padre(juan, pepe)."
+    ];
+
     before(function() {
         // runs before all tests in this block
     });
@@ -101,6 +108,11 @@ describe("Parser", function() {
             assert(parser.isValidRule(validRule));
         });
 
+        it('valid rule should be true', function() {
+            var validRule = "padre(X, Y, Z) :- hijo(Y, X), varon(X), hijo(Z, X).";
+            assert(parser.isValidRule(validRule));
+        });
+
         it('invalid fact should be false', function() {
             var validRule = "padre(X, Y) :- hijo(Y, X),varon(X).";
             assert(!parser.isValidRule(validRule));
@@ -130,6 +142,24 @@ describe("Parser", function() {
 
         it('parsing incorrect db should raise exception', function() {
             expect(parser.parseDatabase.bind(parser, incorrectDb)).to.throw();
+        });
+
+        it('fact db includes known fact should be true', function() {
+            var fact = new Fact('varon', ['juan']);
+            db = parser.parseDatabase(factDb);
+            assert(db.factExists(fact));
+        });
+
+        it('fact db includes known fact should be true', function() {
+            var fact = new Fact('padre', ['juan', 'pepe']);
+            db = parser.parseDatabase(factDb);
+            assert(db.factExists(fact));
+        });
+
+        it('fact db includes unknown fact should be false', function() {
+            var fact = new Fact('madre', ['juan', 'pepe']);
+            db = parser.parseDatabase(factDb);
+            assert(!db.factExists(fact));
         });
     });
 });
