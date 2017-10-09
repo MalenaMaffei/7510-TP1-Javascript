@@ -77,32 +77,32 @@ describe("Parser", function() {
 
         it('valid fact should be true', function() {
             var validFact = "varon(juan).";
-            assert(parser.isValidFact(validFact));
+            assert(parser.fParser.isValidEntry(validFact));
         });
 
         it('valid fact should be true', function() {
             var validFact = "varon(juan, pedro, roberto).";
-            assert(parser.isValidFact(validFact));
+            assert(parser.fParser.isValidEntry(validFact));
         });
 
         it('invalid fact should be false', function() {
             var invalidFact = "varon(juan)";
-            assert(!parser.isValidFact(invalidFact));
+            assert(!parser.fParser.isValidEntry(invalidFact));
         });
 
         it('invalid fact should be false', function() {
             var invalidFact = "varon(juan,).";
-            assert(!parser.isValidFact(invalidFact));
+            assert(!parser.fParser.isValidEntry(invalidFact));
         });
 
         it('invalid fact should be false', function() {
             var invalidFact = "varon(juan,pepe).";
-            assert(!parser.isValidFact(invalidFact));
+            assert(!parser.fParser.isValidEntry(invalidFact));
         });
 
         it('invalid fact should be false', function() {
             var invalidFact = "varon(juan, pepe pedro).";
-            assert(!parser.isValidFact(invalidFact));
+            assert(!parser.fParser.isValidEntry(invalidFact));
         });
     });
 
