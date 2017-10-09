@@ -1,115 +1,115 @@
-var expect = require("chai").expect;
-var should = require('should');
-var assert = require('assert');
-
-var Fact = require('../src/fact');
-var Rule = require('../src/rule');
-var Database = require('../src/database');
-var Query = require('../src/query');
-
-describe("Interpreter", function() {
-
-    var db = null;
-    var interpreter = null;
-    before(function() {
-        // runs before all tests in this block
-    });
-
-    after(function() {
-        // runs after all tests in this block
-    });
-
-    beforeEach(function() {
-        var factA = new Fact('varon', ['pepe']);
-        var factB = new Fact('hijo', ['juan', 'pepe']);
-        var rule = new Rule('padre', ['x', 'y'], [new Fact('varon', ['x']), new Fact('hijo', ['y', 'x'])]);
-        db = new Database();
-        db.addFact(factA);
-        db.addFact(factB);
-        db.addRule(rule);
-        // TODO no se si va con () o no
-        interpreter = new Interpreter(); //?
-        interpreter.db = db;
-
-    });
-
-    afterEach(function() {
-        // runs after each test in this block
-    });
-
-
-    describe('Facts existence', function() {
-
-        it('existing fact should be true', function() {
-            var other = new Fact('varon', ['pepe']);
-            assert(db.factExists(other));
-        });
-
-        it('wrong fact should be false', function() {
-            var other = new Fact('varon', ['pepa']);
-            assert(!db.factExists(other));
-        });
-
-        it('nonexisting fact should be false', function() {
-            var other = new Fact('mujer', ['pepa']);
-            assert(!db.factExists(other));
-        });
-    });
-
-    describe('Rules existence', function() {
-
-        it('existing rule should be true', function() {
-            var other = new Rule('padre', ['x', 'y'], [factA, factB]);
-            assert(db.ruleExists(other));
-        });
-
-        it('different rule with same name should be true', function() {
-            var other = new Rule('padre', ['a', 'b'], [factB, factA]);
-            assert(db.ruleExists(other));
-        });
-
-        it('nonexisting rule should be false', function() {
-            var other = new Rule('madre', ['pepa'], [factA, factB]);
-            assert(!db.ruleExists(other));
-        });
-    });
-
-    describe('Rules and Facts Addition', function() {
-
-        it('adding duplicate fact should raise exception', function() {
-            expect(db.addFact.bind(db, factA)).to.throw();
-        });
-
-        it('adding duplicate rule should raise exception', function() {
-            expect(db.addRule.bind(db, rule)).to.throw();
-        });
-
-        it('different rule with same name should raise exception', function() {
-            var other = new Rule('padre', ['a', 'b'], [factB, factA]);
-            expect(db.addRule.bind(db, other)).to.throw();
-        });
-
-        it('adding new fact should NOT raise exception', function() {
-            var other = new Fact('varon', ['pepa']);
-            expect(db.addFact.bind(db, other)).to.not.throw();
-        });
-
-        it('adding new rule should NOT raise exception', function() {
-            var other = new Rule('madre', ['pepa'], [factA, factB]);
-            expect(db.addRule.bind(db, other)).to.not.throw();
-        });
-    });
-
-    describe('get Rules', function() {
-
-        it('get existing rule from query equals existing rule should be true', function() {
-            var query = new Query('padre', ['aa', 'bb'])
-            assert(db.getRule(query).equals(rule));
-        });
-
-        it('get nonexisting rule from query should raise exception', function() {
-            var query = new Query('tio', ['aa', 'bb'])
-            expect(db.getRule.bind(db, query)).to.throw();
-        });
-    });
-});
+// var expect = require("chai").expect;
+// var should = require('should');
+// var assert = require('assert');
+//
+// var Fact = require('../src/fact');
+// var Rule = require('../src/rule');
+// var Database = require('../src/database');
+// var Query = require('../src/query');
+//
+// describe("Interpreter", function() {
+//
+//     var db = null;
+//     var interpreter = null;
+//     before(function() {
+//         // runs before all tests in this block
+//     });
+//
+//     after(function() {
+//         // runs after all tests in this block
+//     });
+//
+//     beforeEach(function() {
+//         var factA = new Fact('varon', ['pepe']);
+//         var factB = new Fact('hijo', ['juan', 'pepe']);
+//         var rule = new Rule('padre', ['x', 'y'], [new Fact('varon', ['x']), new Fact('hijo', ['y', 'x'])]);
+//         db = new Database();
+//         db.addFact(factA);
+//         db.addFact(factB);
+//         db.addRule(rule);
+//         // TODO no se si va con () o no
+//         interpreter = new Interpreter(); //?
+//         interpreter.db = db;
+//
+//     });
+//
+//     afterEach(function() {
+//         // runs after each test in this block
+//     });
+//
+//
+//     describe('Facts existence', function() {
+//
+//         it('existing fact should be true', function() {
+//             var other = new Fact('varon', ['pepe']);
+//             assert(db.factExists(other));
+//         });
+//
+//         it('wrong fact should be false', function() {
+//             var other = new Fact('varon', ['pepa']);
+//             assert(!db.factExists(other));
+//         });
+//
+//         it('nonexisting fact should be false', function() {
+//             var other = new Fact('mujer', ['pepa']);
+//             assert(!db.factExists(other));
+//         });
+//     });
+//
+//     describe('Rules existence', function() {
+//
+//         it('existing rule should be true', function() {
+//             var other = new Rule('padre', ['x', 'y'], [factA, factB]);
+//             assert(db.ruleExists(other));
+//         });
+//
+//         it('different rule with same name should be true', function() {
+//             var other = new Rule('padre', ['a', 'b'], [factB, factA]);
+//             assert(db.ruleExists(other));
+//         });
+//
+//         it('nonexisting rule should be false', function() {
+//             var other = new Rule('madre', ['pepa'], [factA, factB]);
+//             assert(!db.ruleExists(other));
+//         });
+//     });
+//
+//     describe('Rules and Facts Addition', function() {
+//
+//         it('adding duplicate fact should raise exception', function() {
+//             expect(db.addFact.bind(db, factA)).to.throw();
+//         });
+//
+//         it('adding duplicate rule should raise exception', function() {
+//             expect(db.addRule.bind(db, rule)).to.throw();
+//         });
+//
+//         it('different rule with same name should raise exception', function() {
+//             var other = new Rule('padre', ['a', 'b'], [factB, factA]);
+//             expect(db.addRule.bind(db, other)).to.throw();
+//         });
+//
+//         it('adding new fact should NOT raise exception', function() {
+//             var other = new Fact('varon', ['pepa']);
+//             expect(db.addFact.bind(db, other)).to.not.throw();
+//         });
+//
+//         it('adding new rule should NOT raise exception', function() {
+//             var other = new Rule('madre', ['pepa'], [factA, factB]);
+//             expect(db.addRule.bind(db, other)).to.not.throw();
+//         });
+//     });
+//
+//     describe('get Rules', function() {
+//
+//         it('get existing rule from query equals existing rule should be true', function() {
+//             var query = new Query('padre', ['aa', 'bb'])
+//             assert(db.getRule(query).equals(rule));
+//         });
+//
+//         it('get nonexisting rule from query should raise exception', function() {
+//             var query = new Query('tio', ['aa', 'bb'])
+//             expect(db.getRule.bind(db, query)).to.throw();
+//         });
+//     });
+// });

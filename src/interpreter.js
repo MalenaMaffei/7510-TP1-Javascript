@@ -6,16 +6,22 @@ var Parser = require('../src/parser');
 
 var Interpreter = function() {
     this.db = {};
+    this.parser = new Parser();
 
-    this.parseDB = function(params, paramss, paramsss) {
-
+    this.parseDB = function(dbList) {
+        this.db = this.parser.parseDatabase(dbList);
     }
 
-    this.checkQuery = function(params) {
-        // Aca es donde tengo que chequear si es una regla o  fact, le Tengo
-        // que pasar la query al parser que es el que me va a devolver el objeto.
+    this.checkQuery = function(queryStr) {
+        var query = this.parser.parseQuery(queryStr);
+        if(this.db.factExists(query)){
+            return(true);
+        } else if (this.db.ruleExists(query)) {
+            //
+        } else {
+            return (false);
+        }
 
-        return true;
     }
 
     // EL parseo lo hace el parser, va a llenar la db con rules or facts segun corresponda.

@@ -4,6 +4,7 @@ var InvalidEntryException = require('./invalidEntryException');
 var Database = require('../src/database');
 var Fact = require('../src/fact');
 var Rule = require('../src/rule');
+var Query = require('../src/query');
 
 var factSyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\).$/i
 var querySyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\)$/i
@@ -11,10 +12,6 @@ var ruleSyntax = /^([a-z\-]+)\(([A-Z](?:, [A-Z]+){0,})\) :\- ([a-z\-]+\([A-Z](, 
 
 var Parser = function() {
     this.parseDatabase = function(strDb) {
-        // returns Database object created from a list format database.
-        // var rules = [];
-        // var facts = [];
-        // TODO: CAMBIAR NOMBRES DATABASE Y DB
         var db = new Database();
         strDb.map((entry, i) => {
             if(this.isValidFact(entry)){
@@ -53,8 +50,16 @@ var Parser = function() {
         return(fact);
     }
 
-    this.parseQuery = function(query) {
 
+    this.parseQuery = function(queryStr) {
+        if (this.isValidQuery(queryStr)){
+            var matches = this.getMatches(queryStr, querySyntax);
+            var name = matches[1];
+            var values = matches[2].split(', ');
+            var query = new Query(name, values);
+            return (query);
+        }
+        throw new InvalidEntryException(queryStr + " does not comply with query syntax.");
     }
 
     this.getMatches = function(line, syntax){
@@ -67,6 +72,10 @@ var Parser = function() {
 
     this.isValidRule = function(line){
         return (this.getMatches(line, ruleSyntax) !== null);
+    }
+
+    this.isValidQuery = function(query){
+        return (this.getMatches(query, querySyntax) !== null);
     }
 };
 

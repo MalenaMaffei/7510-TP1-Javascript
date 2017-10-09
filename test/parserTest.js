@@ -6,7 +6,7 @@ var Parser = require('../src/parser');
 var Fact = require('../src/fact');
 var Rule = require('../src/rule');
 var Database = require('../src/database');
-// var Query = require('../src/query');
+var Query = require('../src/query');
 
 describe("Parser", function() {
 
@@ -194,6 +194,17 @@ describe("Parser", function() {
             var values = rule.values[0] == "X" && rule.values[1] == "Y";
             var facts = rule.facts[0].equals(factA) && rule.facts[1].equals(factB);
             assert(name && values && facts);
+        });
+    });
+
+    describe('Query parsing', function() {
+
+        it('parsed query should equal its str parameters', function() {
+            var queryStr = "hija(mama, hija)";
+            var query = parser.parseQuery(queryStr);
+            var name = query.name == "hija";
+            var values = query.values[0] == "mama" && query.values[1] == "hija";
+            assert(name && values);
         });
     });
 });
