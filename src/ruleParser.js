@@ -17,7 +17,6 @@ var RuleParser = function() {
             var rule = new Rule(name, values, facts);
             return (rule);
         }
-        // throw new InvalidEntryException(factStr + " does not comply with fact syntax.");
     }
 
     this.getFacts = function(matches){

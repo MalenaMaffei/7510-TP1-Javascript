@@ -14,7 +14,6 @@ var FactParser = function() {
             var fact = new Fact(name, values);
             return (fact);
         }
-        // throw new InvalidEntryException(factStr + " does not comply with fact syntax.");
     }
 }
 

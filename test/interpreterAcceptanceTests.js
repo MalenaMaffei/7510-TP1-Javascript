@@ -67,7 +67,6 @@ describe("Interpreter", function() {
             assert(interpreter.checkQuery('padre(mario, pepe)') === false);
         });
 
-        // TODO: Add more tests
 
     });
 
@@ -83,7 +82,6 @@ describe("Interpreter", function() {
             assert(interpreter.checkQuery('hijo(pepe, juan)'));
         });
 
-        // TODO: Add more tests
     });
 
 

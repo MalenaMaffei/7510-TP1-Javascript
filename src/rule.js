@@ -11,6 +11,7 @@ var Rule = function(name, values, facts) {
     }
 
     this.getFacts = function(query) {
+        
         if (this.values.length != query.values.length) {
             throw new InvalidEntryException(query + ", incorrect number of arguments, should be " + this.values.length);
         }
