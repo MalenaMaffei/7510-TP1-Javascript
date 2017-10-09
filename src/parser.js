@@ -6,6 +6,10 @@ var Fact = require('../src/fact');
 var Rule = require('../src/rule');
 var Query = require('../src/query');
 
+
+var NAMEPOS = 1;
+var VALUEPOS = 2;
+var FACTSPOS = 3;
 var factSyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\).$/i
 var querySyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\)$/i
 var ruleSyntax = /^([a-z\-]+)\(([A-Z](?:, [A-Z]+){0,})\) :\- ([a-z\-]+\([A-Z](, [A-Z]+){0,}\)(, [a-z\-]+\([A-Z](, [A-Z]+){0,}\)){0,})\.$/
@@ -28,24 +32,37 @@ var Parser = function() {
 
     }
 
-    this.parseRule = function(ruleStr) {
-        var matches = this.getMatches(ruleStr, ruleSyntax);
-        var name = matches[1];
-        var values = matches[2].split(', ');
-        var facts = matches[3].replace(/(\w+),\s+/g,'$1,').split(', ');
+    this.getName = function(matches){
+        return (matches[NAMEPOS]);
+    }
+
+    this.getValues = function(matches){
+        return (matches[VALUEPOS].split(', '));
+    }
+
+    this.getFacts = function(matches){
+        var facts = matches[FACTSPOS].replace(/(\w+),\s+/g,'$1,').split(', ');
         facts = facts.map((fact, i) => {
             fact = fact + '.';
             fact = fact.replace(',', ', ');
             return(this.parseFact(fact));
         });
+        return(facts)
+    }
+
+    this.parseRule = function(ruleStr) {
+        var matches = this.getMatches(ruleStr, ruleSyntax);
+        var name = this.getName(matches);
+        var values = this.getValues(matches);
+        var facts = this.getFacts(matches);
         var rule = new Rule(name, values, facts);
         return (rule);
     }
 
     this.parseFact = function(factStr){
         var matches = this.getMatches(factStr, factSyntax);
-        var name = matches[1];
-        var values = matches[2].split(', ');
+        var name = this.getName(matches);
+        var values = this.getValues(matches);
         var fact = new Fact(name, values);
         return(fact);
     }
@@ -54,8 +71,8 @@ var Parser = function() {
     this.parseQuery = function(queryStr) {
         if (this.isValidQuery(queryStr)){
             var matches = this.getMatches(queryStr, querySyntax);
-            var name = matches[1];
-            var values = matches[2].split(', ');
+            var name = this.getName(matches);
+            var values = this.getValues(matches);
             var query = new Query(name, values);
             return (query);
         }
