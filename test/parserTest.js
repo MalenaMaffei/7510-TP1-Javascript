@@ -110,32 +110,32 @@ describe("Parser", function() {
 
         it('valid rule should be true', function() {
             var validRule = "padre(X, Y) :- hijo(Y, X), varon(X).";
-            assert(parser.isValidRule(validRule));
+            assert(parser.rParser.isValidEntry(validRule));
         });
 
         it('valid rule should be true', function() {
             var validRule = "padre(X, Y, Z) :- hijo(Y, X), varon(X), hijo(Z, X).";
-            assert(parser.isValidRule(validRule));
+            assert(parser.rParser.isValidEntry(validRule));
         });
 
         it('invalid fact should be false', function() {
             var validRule = "padre(X, Y) :- hijo(Y, X),varon(X).";
-            assert(!parser.isValidRule(validRule));
+            assert(!parser.rParser.isValidEntry(validRule));
         });
 
         it('invalid fact should be false', function() {
             var validRule = "padre(X, Y) :- hijo(Y, X), varon(X)";
-            assert(!parser.isValidRule(validRule));
+            assert(!parser.rParser.isValidEntry(validRule));
         });
 
         it('invalid fact should be false', function() {
             var validRule = "padre(X, Y):-hijo(Y, X), varon(X).";
-            assert(!parser.isValidRule(validRule));
+            assert(!parser.rParser.isValidEntry(validRule));
         });
 
         it('invalid fact should be false', function() {
             var validRule = "padre(X, Y) :- hijo(), varon(X).";
-            assert(!parser.isValidRule(validRule));
+            assert(!parser.rParser.isValidEntry(validRule));
         });
     });
 
@@ -169,14 +169,14 @@ describe("Parser", function() {
 
         it('ruleDb includes unknown rule should be false', function() {
             var ruleStr = "hola(X, Y) :- mujer(X), padre(Y, X).";
-            var rule = parser.parseRule(ruleStr);
+            var rule = parser.rParser.parse(ruleStr);
             db = parser.parseDatabase(ruleDb);
             assert(!db.ruleExists(rule));
         });
 
         it('ruleDb includes known rule should be true', function() {
             var ruleStr = "hija(X, Y) :- mujer(X), padre(Y, X).";
-            var rule = parser.parseRule(ruleStr);
+            var rule = parser.rParser.parse(ruleStr);
             db = parser.parseDatabase(ruleDb);
             assert(db.ruleExists(rule));
         });
@@ -187,9 +187,9 @@ describe("Parser", function() {
 
         it('parsed rule should equal its str parameters', function() {
             var ruleStr = "hija(X, Y) :- mujer(X), padre(Y, X).";
-            var factA = parser.parseFact('mujer(X).');
-            var factB = parser.parseFact('padre(Y, X).');
-            var rule = parser.parseRule(ruleStr);
+            var factA = parser.fParser.parse('mujer(X).');
+            var factB = parser.fParser.parse('padre(Y, X).');
+            var rule = parser.rParser.parse(ruleStr);
             var name = rule.name == "hija";
             var values = rule.values[0] == "X" && rule.values[1] == "Y";
             var facts = rule.facts[0].equals(factA) && rule.facts[1].equals(factB);
@@ -201,7 +201,7 @@ describe("Parser", function() {
 
         it('parsed query should equal its str parameters', function() {
             var queryStr = "hija(mama, hija)";
-            var query = parser.parseQuery(queryStr);
+            var query = parser.qParser.parse(queryStr);
             var name = query.name == "hija";
             var values = query.values[0] == "mama" && query.values[1] == "hija";
             assert(name && values);
