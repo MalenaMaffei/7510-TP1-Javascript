@@ -17,26 +17,20 @@ var Interpreter = function() {
         if(this.db.factExists(query)){
             return(true);
         } else if (this.db.ruleExists(query)) {
-            //
+            return (this.evaluateRule(query));
         } else {
             return (false);
         }
 
     }
 
-    // EL parseo lo hace el parser, va a llenar la db con rules or facts segun corresponda.
-    // DEspues cada query tambien se la doy al parser que va a devolver una query.
-    // Yo despues se la paso a la db. Si es factExist, true; else if ruleExist -> evaluate rule; else return false
-
     this.evaluateRule = function(query) {
-        var rule = db.getRule(query);
+        var rule = this.db.getRule(query);
         var facts = rule.getFacts(query);
-        // aca tendria que llenar un map con trues y falses y dsp orarlos
         var factsExistence = facts.map((fact, i ) => {
-            return(db.factExists(fact));
+            return(this.db.factExists(fact));
         });
-// TODO: anded? is that correct?
-        const andedFacts = factsExistence.reduce( other && fact);
+        var andedFacts = factsExistence.reduce((ands, value) => ands && value);
         return(andedFacts);
     }
 

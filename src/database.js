@@ -46,14 +46,6 @@ var Database = function() {
         }
         throw new InvalidEntryException(query + " rule does not exist.");
     }
-
-
-    // this.checkQuery = function(query) {
-    //     if (!this.factExists(query)) {
-    //         return this.ruleExists(query)
-    //     }
-    //     return true;
-    // }
 };
 
 module.exports = Database;

@@ -47,4 +47,16 @@ describe("Rule", function() {
             assert(rule.equals(query));
         });
     });
+
+    describe('getFacts', function() {
+
+        it('facts from getFacts should equal original facts', function() {
+            var query = new Query('padre', ['papa', 'hijo']);
+            var factHijo = new Fact('hijo', ['papa', 'hijo']);
+            var factVaron = new Fact('varon', ['papa']);
+            var facts = rule.getFacts(query);
+            assert(factHijo.equals(facts[1]) && factVaron.equals(facts[0]));
+        });
+
+    });
 });
