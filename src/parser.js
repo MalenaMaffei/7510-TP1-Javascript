@@ -5,8 +5,8 @@ var Database = require('../src/database');
 var Fact = require('../src/fact');
 var Rule = require('../src/rule');
 
-var factSyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\).$/
-var querySyntax = /^[a-z\-]+\([a-z\-]+(, [a-z\-]+){0,}\)$/
+var factSyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\).$/i
+var querySyntax = /^([a-z\-]+)\(([a-z\-]+(, [a-z\-]+){0,})\)$/i
 var ruleSyntax = /^([a-z\-]+)\(([A-Z](?:, [A-Z]+){0,})\) :\- ([a-z\-]+\([A-Z](, [A-Z]+){0,}\)(, [a-z\-]+\([A-Z](, [A-Z]+){0,}\)){0,})\.$/
 
 var Parser = function() {
@@ -21,8 +21,8 @@ var Parser = function() {
                 var fact = this.parseFact(entry);
                 db.addFact(fact);
             } else if (this.isValidRule(entry)) {
-                // var rule = this.parseRule(entry);
-                // db.addRule(rule);
+                var rule = this.parseRule(entry);
+                db.addRule(rule);
             } else {
                 throw new InvalidEntryException(entry + " does not comply with either fact or rule syntax.");
             }
@@ -32,17 +32,17 @@ var Parser = function() {
     }
 
     this.parseRule = function(ruleStr) {
-        // TODO: ver como capturar los facts sin hacer split
-        // var matches = this.getMatches(ruleStr, ruleSyntax);
-        // var name = matches[1];
-        // var values = matches[2].split(', ');
-        // var possibleFacts = matches[3].split(', ');
-        // var facts = possibleFacts.filter((fact))
-        // facts = facts.map((fact, i) => {
-        //     return(this.parseFact(fact));
-        // });
-        // var rule = new Rule(name, values, facts)
-        // return (rule)
+        var matches = this.getMatches(ruleStr, ruleSyntax);
+        var name = matches[1];
+        var values = matches[2].split(', ');
+        var facts = matches[3].replace(/(\w+),\s+/g,'$1,').split(', ');
+        facts = facts.map((fact, i) => {
+            fact = fact + '.';
+            fact = fact.replace(',', ', ');
+            return(this.parseFact(fact));
+        });
+        var rule = new Rule(name, values, facts);
+        return (rule);
     }
 
     this.parseFact = function(factStr){
